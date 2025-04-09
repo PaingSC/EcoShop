@@ -2,12 +2,13 @@ import styles from "./ProductCard.module.css";
 interface ProductCardProps {
   title: string;
   price: number;
+  imageUrl: string;
 }
 
-const ProductCard = ({ title, price }: ProductCardProps) => (
+const ProductCard = ({ title, price, imageUrl }: ProductCardProps) => (
   <div className={styles.card}>
     <div className={styles.imageContainer}>
-      <span>Product Image</span>
+      <img src={imageUrl} alt={title} className={styles.productImage} />
     </div>
     <div className={styles.info}>
       <h3>{title}</h3>

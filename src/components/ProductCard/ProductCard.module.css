@@ -37,3 +37,9 @@
   border-radius: 4px;
   cursor: pointer;
 }
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures full image visibility */
+  padding: 20px; /* Prevents image touching edges */
+}
