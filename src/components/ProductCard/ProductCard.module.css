@@ -1,0 +1,39 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.imageContainer {
+  height: 200px;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  padding: 16px;
+}
+
+.price {
+  color: var(--primary);
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.button {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
