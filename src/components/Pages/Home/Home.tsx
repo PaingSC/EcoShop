@@ -6,22 +6,21 @@ const products = [
   {
     title: "Bamboo Toothbrush",
     price: 3.99,
-    // imageUrl: "public/images/products/eco-toothbrush.webp",
     imageUrl: "images/products/eco-toothbrush.png",
   },
   {
     title: "Reusable Bottle",
-    price: 3.99,
+    price: 12.99,
     imageUrl: "images/products/reusable-bottle.png",
   },
   {
     title: "Organic Cotton Bag",
-    price: 3.99,
+    price: 8.99,
     imageUrl: "images/products/cotton-bag.png",
   },
   {
     title: "Solar Charger",
-    price: 3.99,
+    price: 24.99,
     imageUrl: "images/products/solar-charger.png",
   },
 ];
