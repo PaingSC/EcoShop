@@ -6,12 +6,12 @@ import { CartContext } from "../../context/CartContext";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
-  const { cartCount } = useContext(CartContext);
+  const { cartCount, openCart } = useContext(CartContext);
 
   return (
     <header className={styles.navbar}>
       <span className={styles.title}>EcoShop</span>
-      <IconButton className={styles.cartButton}>
+      <IconButton className={styles.cartButton} onClick={openCart}>
         <Badge badgeContent={cartCount} color="error">
           <ShoppingCart />
         </Badge>
