@@ -16,6 +16,8 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, newQuantity: number) => void;
+  clearCartItems: () => void;
 }
 
 export const CartContext = createContext<CartContextType>({
@@ -26,6 +28,8 @@ export const CartContext = createContext<CartContextType>({
   openCart: () => {},
   closeCart: () => {},
   removeFromCart: () => {},
+  updateQuantity: () => {},
+  clearCartItems: () => {},
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -35,10 +39,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
+  // Handler: remove from the cart
   const removeFromCart = (id: string) => {
     setCartItems((addedItems) => addedItems.filter((item) => item.id !== id));
   };
 
+  // Handler: add to the cart
   const addToCart = (product: Omit<CartItem, "quantity">) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
@@ -51,6 +57,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return [...prevItems, { ...product, quantity: 1 }];
     });
+  };
+
+  // Handler: update the item quantity
+  const updateQuantity = (id: string, newQuantity: number) => {
+    setCartItems((addedItems) =>
+      addedItems.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
+      )
+    );
+  };
+
+  // Handle: clear cart Items
+  const clearCartItems = () => {
+    setCartItems([]);
   };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -66,6 +86,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         openCart,
         closeCart,
         removeFromCart,
+        updateQuantity,
+        clearCartItems,
       }}
     >
       {children}

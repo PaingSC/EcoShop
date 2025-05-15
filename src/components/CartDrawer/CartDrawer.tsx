@@ -1,14 +1,30 @@
 //
 
-import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { useContext } from "react";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { useContext, useState } from "react";
 import { CartContext } from "../../context/CartContext";
+import CheckoutForm from "../CheckoutForm/CheckoutForm";
 
 const CartDrawer = () => {
-  const { cartItems, isCartOpen, closeCart, removeFromCart } =
-    useContext(CartContext);
-
+  const {
+    cartItems,
+    isCartOpen,
+    closeCart,
+    removeFromCart,
+    updateQuantity,
+    clearCartItems,
+  } = useContext(CartContext);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const calculateTotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
@@ -18,7 +34,7 @@ const CartDrawer = () => {
       anchor="right"
       open={isCartOpen}
       onClose={closeCart}
-      PaperProps={{ sx: { width: 350, padding: 2 } }}
+      PaperProps={{ sx: { width: { xs: "100%", sm: 352 }, padding: 2 } }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6">Your Cart</Typography>
@@ -52,6 +68,25 @@ const CartDrawer = () => {
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </Box>
+
+              {/* Adding Quantity Buttons */}
+              <Box display="flex" alignItems="center" gap={1}>
+                <IconButton
+                  size="small"
+                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  disabled={item.quantity <= 1}
+                >
+                  <RemoveIcon fontSize="small" />
+                </IconButton>
+                <Typography>{item.quantity}</Typography>
+                <IconButton
+                  size="small"
+                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </Box>
+
               <Divider sx={{ mt: 2 }} />
             </Box>
           ))}
@@ -59,19 +94,24 @@ const CartDrawer = () => {
           <Typography variant="h6" sx={{ mt: 2 }}>
             Total: ${calculateTotal().toFixed(2)}
           </Typography>
-          <button
-            style={{
-              background: "#2E8B57",
-              color: "white",
-              padding: "12px",
-              width: "100%",
-              border: "none",
-              marginTop: "16px",
-              borderRadius: "4px",
-            }}
-          >
-            Checkout
-          </button>
+          {isCheckingOut ? (
+            <CheckoutForm
+              onSubmit={(values) => {
+                alert(JSON.stringify(values));
+                clearCartItems();
+                closeCart();
+              }}
+            />
+          ) : (
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => setIsCheckingOut(true)}
+              sx={{ bgcolor: "#2E8B57", "&:hover": { bgcolor: "#3CB371" } }}
+            >
+              Proceed to Checkout
+            </Button>
+          )}
         </>
       )}
     </Drawer>
