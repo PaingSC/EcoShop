@@ -14,6 +14,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useContext, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import CheckoutForm from "../CheckoutForm/CheckoutForm";
+import Payment from "../Payment/Payment";
 
 const CartDrawer = () => {
   const {
@@ -25,6 +26,11 @@ const CartDrawer = () => {
     clearCartItems,
   } = useContext(CartContext);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  // const [checkoutStep, setCheckoutStep] = useState<"details" | "payment">(
+  //   "details"
+  // );
+
+  // Handle: calculate the total price
   const calculateTotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
@@ -95,13 +101,22 @@ const CartDrawer = () => {
             Total: ${calculateTotal().toFixed(2)}
           </Typography>
           {isCheckingOut ? (
-            <CheckoutForm
-              onSubmit={(values) => {
-                alert(JSON.stringify(values));
-                clearCartItems();
-                closeCart();
-              }}
-            />
+            <div>
+              <CheckoutForm
+                onSubmit={(values) => {
+                  alert(JSON.stringify(values));
+                  clearCartItems();
+                  closeCart();
+                }}
+              />
+              <Payment
+                amount={calculateTotal()}
+                onSuccess={() => {
+                  closeCart();
+                  setIsCheckingOut(false);
+                }}
+              />
+            </div>
           ) : (
             <Button
               fullWidth
